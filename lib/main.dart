@@ -5,117 +5,68 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final appTitle = 'Flutter Form Demo';
     return MaterialApp(
-      home: HomePage(),
-      theme: ThemeData(
-        brightness: Brightness.dark,
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(appTitle),
+        ),
+        body: MyCustomForm(),
       ),
     );
   }
 }
-
-class HomePage extends StatefulWidget {
+// Create a Form widget.
+class MyCustomForm extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  var _formKey = GlobalKey<FormState>();
-  var isLoading = false;
-
-  void _submit() {
-    final isValid = _formKey.currentState?.validate();
-    if (!isValid!) {
-            return;
-    }else{
-      print("information is Validated");
-    }
-    _formKey.currentState?.save();
+  MyCustomFormState createState() {
+    return MyCustomFormState();
   }
+}
+// Create a corresponding State class. This class holds data related to the form.
+class MyCustomFormState extends State<MyCustomForm> {
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Form Validation"),
-        leading: Icon(Icons.filter_vintage),
-      ),
-      //body
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        //form
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Text(
-                "Form-Validation In Flutter ",
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
-              //styling
-              SizedBox(
-                height: MediaQuery.of(context).size.width * 0.1,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'E-Mail'),
-                keyboardType: TextInputType.emailAddress,
-                onFieldSubmitted: (value) {
-                  //Validator
-                },
-                validator: (value) {
-                  if (value!.isEmpty ||
-                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value!)) {
-                    return 'Enter a valid email!';
-                  }
-                  return null;
-                },
-              ),
-              //box styling
-              SizedBox(
-                height: MediaQuery.of(context).size.width * 0.1,
-              ),
-              //text input
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                keyboardType: TextInputType.emailAddress,
-                onFieldSubmitted: (value) {},
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter a valid password!';
-                  }else if (value!.length<8) {
-                    return ' password should be at least 8 chars';
-                  }else if (!RegExp("[a-z]").hasMatch(value!)) {
-                    return ' password should at least one lowercase chars';
-                  }else if (!RegExp("[A-Z]").hasMatch(value!)) {
-                    return ' password should at least one uppercase chars';
-                  }else if (!RegExp("[!#\$%&'*+-/=?^_`{|}~@]").hasMatch(value!)) {
-                    return ' password should at least one symbol';
-                  }else if (!RegExp("[0-9]").hasMatch(value!)) {
-                    return ' password should at least one number';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.width * 0.1,
-              ),
-              ElevatedButton(
-
-                child: Text(
-                  "Submit",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                  ),
-                ),
-                onPressed: () => _submit(),
-              )
-            ],
+    // Build a Form widget using the _formKey created above.
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.person),
+              hintText: 'Enter your name',
+              labelText: 'Name',
+            ),
           ),
-        ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.phone),
+              hintText: 'Enter a phone number',
+              labelText: 'Phone',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.calendar_today),
+              hintText: 'Enter your date of birth',
+              labelText: 'Dob',
+            ),
+          ),
+          new Container(
+              padding: const EdgeInsets.only(left: 150.0, top: 40.0),
+              child: new ElevatedButton(
+                child: const Text('Submit'),
+                onPressed: null,
+              )),
+        ],
       ),
     );
   }
 }
-//https://github.com/malkthere/Form-Validation-.git
