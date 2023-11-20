@@ -84,6 +84,16 @@ class _HomePageState extends State<HomePage> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Enter a valid password!';
+                  }else if (value!.length<8) {
+                    return ' password should be at least 8 chars';
+                  }else if (!RegExp("[a-z]").hasMatch(value!)) {
+                    return ' password should at least one lowercase chars';
+                  }else if (!RegExp("[A-Z]").hasMatch(value!)) {
+                    return ' password should at least one uppercase chars';
+                  }else if (!RegExp("[!#\$%&'*+-/=?^_`{|}~@]").hasMatch(value!)) {
+                    return ' password should at least one symbol';
+                  }else if (!RegExp("[0-9]").hasMatch(value!)) {
+                    return ' password should at least one number';
                   }
                   return null;
                 },
